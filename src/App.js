@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import LoginView from '../src/views/LoginView';
+import HomeView from '../src/views/HomeView';
+import NavBar from './components/NavBar';
 
 function App() {
+  const [page, setPage] = useState('home');
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setPage('home');
+    } else {
+      setPage('login');
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+
+      {page === 'home' && <HomeView />}
+      {page === 'login' && <LoginView setPage={setPage} />}
+    </>
   );
 }
 
